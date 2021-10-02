@@ -1,0 +1,82 @@
+Options:
+	p: &3Melodia &8»
+	nop: &3Melodia &8» &cÜzgünüm bunu yapmak için gerekli erişimin bulunmamaktadır.
+
+on first join: 
+    set {rank::%player%} to "Oyuncu"
+	
+command /rank [<offline player>] [<text>]:
+	permission: melodia.yetkiver
+	permission message: {@nop}
+	trigger:
+		if arg 1 is set:
+			if arg 2 is "Yönetici":
+				set {rank::%arg-1%} to "Yönetici"
+				execute console command "/manuadd %arg-1% yönetici"
+				send "{@p} &f%arg-1% &7isimli oyuncuya &f%{rank::%arg-1%}% &7yetkisi verilmiştir." to all players
+			if arg 2 is "Admin":
+				set {rank::%arg-1%} to "Admin"
+				execute console command "/manuadd %arg-1% admin"
+				send "{@p} &f%arg-1% &7isimli oyuncuya &f%{rank::%arg-1%}% &7yetkisi verilmiştir." to all players
+			if arg 2 is "Moderatör":
+				set {rank::%arg-1%} to "Moderatör"
+				execute console command "/manuadd %arg-1% moderator"
+				send "{@p} &f%arg-1% &7isimli oyuncuya &f%{rank::%arg-1%}% &7yetkisi verilmiştir." to all players
+			if arg 2 is "Asistan":
+				set {rank::%arg-1%} to "Asistan"
+				execute console command "/manuadd %arg-1% Asistan"
+				send "{@p} &f%arg-1% &7isimli oyuncuya &f%{rank::%arg-1%}% &7yetkisi verilmiştir." to all players
+			if arg 2 is "Destek":
+				set {rank::%arg-1%} to "Destek"
+				execute console command "/manuadd %arg-1% Destek"
+				send "{@p} &f%arg-1% &7isimli oyuncuya &f%{rank::%arg-1%}% &7yetkisi verilmiştir." to all players
+			if arg 2 is "Rehber":
+				set {rank::%arg-1%} to "Rehber"
+				execute console command "/manuadd %arg-1% rehber"
+				send "{@p} &f%arg-1% &7isimli oyuncuya &f%{rank::%arg-1%}% &7yetkisi verilmiştir." to all players
+			if arg 2 is "denemerehber":
+				set {rank::%arg-1%} to "DenemeRehber"
+				execute console command "/manuadd %arg-1% denemerehber"
+				send "{@p} &f%arg-1% &7isimli oyuncuya &f%{rank::%arg-1%}% &7yetkisi verilmiştir." to all players
+			if arg 2 is "sil":
+				set {rank::%arg-1%} to "Oyuncu"
+				execute console command "/manuadd %arg-1% oyuncu"
+				send "{@p} &f%arg-1% &7isimli oyunun yetkisi silinmiştir." to all players
+			if arg 2 is "bilgi":
+				send "{@p} &f%arg-1% &7isimli oyuncunun yetkisi &f%{rank::%arg-1%}%" to player
+				send "{@p} &f%arg-1% &7isimli oyuncunun ip adresi &f%arg-1's ip%" to player
+			if arg 2 is not "bilgi" or "sil" or "denemerehber" or "Rehber" or "asistan" or "destek" or "moderatör" or "admin" or "yönetici":
+				send "{@p} &7Kullanım: /rank (Oyuncu) (Yetki; DenemeRehber,Rehber,Destek, Asistan, Moderatör, Admin, Yönetici)"
+				send "{@p} &7Kullanım: /rank (Oyuncu) bilgi"
+		else:
+			send "{@p} &7Kullanım: /rank (Oyuncu) (Yetki; DenemeRehber,Rehber,Destek, Asistan, Moderatör, Admin, Yönetici)"
+			send "{@p} &7Kullanım: /rank (Oyuncu) bilgi"
+			send "{@p} &7Kullanım: /rank (Oyuncu) sil"
+			
+on skript load:
+   login to "TOKEN" with name "Melodia"
+			
+discord command !rank <offlineplayer>:
+	trigger:
+		if {rank::%arg 1%} is set:
+			if arg 1 is a op:
+				create embed:
+					set thumbnail of the embed to "https://mc-heads.net/avatar/%arg-1%"
+					set color of the embed to color from rgb 0, 0, 0
+					set description of embed to "Kullanıcı Operatördür"
+					add field named "Kullanıcı:" with value "%arg 1%" to embed
+					add field named "Rütbe:" with value "%{rank::%arg 1%}%" to embed
+				send the last created embed to event-channel with event-bot
+			else:
+				create embed:
+					set thumbnail of the embed to "https://mc-heads.net/avatar/%arg-1%"
+					set color of the embed to color from rgb 0, 0, 0
+					add field named "Kullanıcı:" with value "%arg 1%" to embed
+					add field named "Rütbe:" with value "%{rank::%arg 1%}%" to embed
+				send the last created embed to event-channel with event-bot
+		else:
+			create embed:
+				set description of the embed to "%arg-1% İsimli oyuncu daha önce sunucuya giriş yapmamış."
+			send the last created embed to event-channel with event-bot
+			
+			
